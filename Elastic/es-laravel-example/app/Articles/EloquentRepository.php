@@ -14,4 +14,16 @@ class EloquentRepository implements ArticlesRepository
             ->orWhere('title', 'like', "%{$query}%")
             ->get();
     }
+
+    public function index(){
+        return Article::all();
+    }
+
+    public function save($array){
+        
+    }
+
+    public function update($array, $id){
+        
+    }
 }

@@ -12,19 +12,9 @@
 */
 use App\Articles\ArticlesRepository;
 
-Route::get('/', function () {
-    return view('articles.index', [
-        'articles' => App\Article::all(),
-    ]);
-});
+Route::get('/', 'ArticleController@index');
 
-Route::get('/search', function (ArticlesRepository $repository) {
-    $articles = $repository->search((string) request('q'));
-
-    return view('articles.index', [
-        'articles' => $articles,
-    ]);
-});
+Route::get('/search', 'ArticleController@search');
 
 Auth::routes();
 

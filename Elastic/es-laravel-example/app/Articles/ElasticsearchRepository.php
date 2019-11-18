@@ -17,10 +17,34 @@ class ElasticsearchRepository implements ArticlesRepository
         $this->elasticsearch = $elasticsearch;
     }
 
-    public function search(string $query = ''): Collection
-    {
-        $items = $this->searchOnElasticsearch($query);
+    public function index(){
+        $items = $this->indexOnElasticsearch();
         return $this->buildCollection($items);
+    }
+
+    public function search(string $query = ''): Collection
+    {   
+        $items = strlen($query) > 0 ? $this->searchOnElasticsearch($query) : $this->indexOnElasticsearch();
+        return $this->buildCollection($items);
+    }
+
+    public function save($array){
+        
+    }
+
+    public function update($array, $id){
+        
+    }
+
+    private function indexOnElasticsearch(): array
+    {
+        $model = new Article;
+
+        $items = $this->elasticsearch->search([
+            'index' => $model->getSearchIndex(),
+        ]);
+        
+        return $items;
     }
 
     private function searchOnElasticsearch(string $query = ''): array
@@ -39,7 +63,6 @@ class ElasticsearchRepository implements ArticlesRepository
                 ],
             ],
         ]);
-        
         return $items;
     }
 
